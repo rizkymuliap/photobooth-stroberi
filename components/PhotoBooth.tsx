@@ -372,11 +372,8 @@ export default function PhotoBooth() {
             const box = detection.box;
 
             /*
-             * object-fit: cover
-             *
-             * Preview camera is 1280x720 but viewfinder
-             * is square. Calculate the actual crop.
-             */
+            * object-fit: cover
+            */
             const vw = video.videoWidth;
             const vh = video.videoHeight;
 
@@ -385,11 +382,8 @@ export default function PhotoBooth() {
               height / vh
             );
 
-            const renderedWidth =
-              vw * scale;
-
-            const renderedHeight =
-              vh * scale;
+            const renderedWidth = vw * scale;
+            const renderedHeight = vh * scale;
 
             const offsetX =
               (width - renderedWidth) / 2;
@@ -398,44 +392,56 @@ export default function PhotoBooth() {
               (height - renderedHeight) / 2;
 
             /*
-             * Convert raw camera face position
-             * into preview position.
-             */
-            const faceCenterX =
-              box.x +
-              box.width / 2;
+            * ==========================
+            * DUA STROBERI DI PIPI
+            * ==========================
+            */
 
-            const faceTopY = box.y;
+            const faceWidth = box.width * scale;
 
-            const previewCenterX =
-              faceCenterX * scale +
-              offsetX;
-
-            const previewTopY =
-              faceTopY * scale +
+            // Posisi vertikal pipi
+            const cheekY =
+              (box.y + box.height * 0.62) * scale +
               offsetY;
 
-            /*
-             * Preview is mirrored.
-             */
-            const mirroredX =
-              width - previewCenterX;
+            // Posisi horizontal pipi
+            const leftCheekX =
+              (box.x + box.width * 0.27) * scale +
+              offsetX;
 
+            const rightCheekX =
+              (box.x + box.width * 0.73) * scale +
+              offsetX;
+
+            // Mirror mengikuti preview kamera
+            const mirroredLeftX =
+              width - leftCheekX;
+
+            const mirroredRightX =
+              width - rightCheekX;
+
+            // Ukuran stroberi
             const berrySize = Math.max(
-              44,
-              box.width * scale * 0.85
+              15,
+              faceWidth * 0.10
             );
 
+            // 🍓 Pipi kiri
             drawStrawberry(
               ctx,
-              mirroredX,
-              Math.max(
-                berrySize * 0.5,
-                previewTopY -
-                  berrySize * 0.35
-              ),
+              mirroredLeftX,
+              cheekY - 40,
               berrySize,
-              -8
+              -10
+            );
+
+            // 🍓 Pipi kanan
+            drawStrawberry(
+              ctx,
+              mirroredRightX,
+              cheekY - 40,
+              berrySize,
+              10
             );
           }
         } catch (error) {
@@ -599,42 +605,95 @@ export default function PhotoBooth() {
         const scale =
           SHOT_SIZE / cropSize;
 
-        const centerXInCrop =
-          faceBox.x +
-          faceBox.width / 2 -
-          sx;
+        /*
+        * ==========================
+        * POSISI DUA PIPI
+        * ==========================
+        */
 
-        const topYInCrop =
-          faceBox.y - sy;
+        // Posisi vertikal pipi
+        const cheekY =
+          faceBox.y +
+          faceBox.height * 0.62;
+
+        // Posisi horizontal pipi kiri
+        const leftCheekX =
+          faceBox.x +
+          faceBox.width * 0.27;
+
+        // Posisi horizontal pipi kanan
+        const rightCheekX =
+          faceBox.x +
+          faceBox.width * 0.73;
 
         /*
-         * Because image is mirrored.
-         */
-        const mirroredCenterX =
-          SHOT_SIZE -
-          centerXInCrop * scale;
+        * ==========================
+        * SESUAIKAN DENGAN CROP
+        * ==========================
+        */
 
-        const topY =
-          topYInCrop * scale;
+        const leftXInCrop =
+          leftCheekX - sx;
+
+        const rightXInCrop =
+          rightCheekX - sx;
+
+        const cheekYInCrop =
+          cheekY - sy;
+
+        /*
+        * ==========================
+        * MIRROR
+        * ==========================
+        */
+
+        const mirroredLeftX =
+          SHOT_SIZE -
+          leftXInCrop * scale;
+
+        const mirroredRightX =
+          SHOT_SIZE -
+          rightXInCrop * scale;
+
+        const y =
+          cheekYInCrop * scale;
+
+        /*
+        * ==========================
+        * UKURAN STROBERI
+        * ==========================
+        */
 
         const berrySize =
           Math.max(
-            36,
+            42,
             faceBox.width *
               scale *
-              0.85
+              0.10
           );
+
+        /*
+        * 🍓 STROBERI PIPI KIRI
+        */
 
         drawStrawberry(
           ctx,
-          mirroredCenterX,
-          Math.max(
-            berrySize * 0.5,
-            topY -
-              berrySize * 0.35
-          ),
+          mirroredLeftX,
+          y -50,
           berrySize,
-          -8
+          -10
+        );
+
+        /*
+        * 🍓 STROBERI PIPI KANAN
+        */
+
+        drawStrawberry(
+          ctx,
+          mirroredRightX,
+          y -50,
+          berrySize,
+          10
         );
       }
 
@@ -1276,13 +1335,11 @@ export default function PhotoBooth() {
       <div className="card">
         <div className="calyx">
           <h1>
-            🍓 StoriBerry Photobooth
+            🍓 StoriBerry Photobooth Meng 
           </h1>
 
           <p>
-            Jepret 8 foto, pilih 3
-            favoritmu, hias, lalu
-            unduh
+            Meng... ambil 8 foto dluuu abis tuu pilih yaa
           </p>
         </div>
 
@@ -1314,8 +1371,7 @@ export default function PhotoBooth() {
 
               <div className="row">
                 <div className="switch-row">
-                  🍓 Filter Stroberi di
-                  Wajah
+                  🍓 Filter Stroberi di pipi meng..
                 </div>
 
                 <button
