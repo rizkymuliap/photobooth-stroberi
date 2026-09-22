@@ -109,6 +109,7 @@ input:focus-visible {
   padding: 24px 24px 28px;
 }
 
+
 .viewfinder {
   position: relative;
   width: 100%;
@@ -119,38 +120,167 @@ input:focus-visible {
   border: 4px solid var(--berry);
 }
 
-.viewfinder video,
-.viewfinder canvas.preview-frame {
+.viewfinder video {
   position: absolute;
   inset: 0;
+  z-index: 1;
+
   width: 100%;
   height: 100%;
+
+  display: block;
+
   object-fit: cover;
   transform: scaleX(-1);
+
+  background: #000;
+}
+
+.face-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
 }
 
 .viewfinder .overlay-center {
   position: absolute;
   inset: 0;
+  z-index: 3;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   pointer-events: none;
 }
 
 .countdown-num {
-  font-family: "Baloo 2", sans-serif;
-  font-size: 92px;
-  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 999px;
+
+  background: rgba(175, 36, 54, 0.88);
+
   color: #fff;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+
+  font-size: 76px;
+  font-weight: 900;
+  line-height: 1;
+
+  text-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.25);
+
+  animation:
+    countdownPop
+    700ms
+    ease-out;
+}
+
+@keyframes countdownPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  70% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .flash {
   position: absolute;
   inset: 0;
+  z-index: 4;
+
+  background: #fff;
+
+  animation:
+    flashFade
+    320ms
+    ease-out
+    forwards;
+
+  pointer-events: none;
+}
+
+@keyframes flashFade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.viewfinder {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #1c1410;
+  border: 4px solid var(--berry);
+}
+
+.viewfinder video {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+
+  transform: scaleX(-1);
+
+  background: #000;
+}
+
+.viewfinder .overlay-center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+
   background: #fff;
   animation: flashFade 320ms ease-out forwards;
+
+  pointer-events: none;
 }
 
 @keyframes flashFade {
@@ -350,4 +480,48 @@ input:focus-visible {
   color: var(--ink-soft);
   margin-top: 4px;
 }
+
+.countdown-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 999px;
+
+  background: rgba(175, 36, 54, 0.88);
+  color: #fff;
+
+  font-size: 76px;
+  font-weight: 900;
+  line-height: 1;
+
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+
+  animation: countdownPop 700ms ease-out;
+}
+
+@keyframes countdownPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  70% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
